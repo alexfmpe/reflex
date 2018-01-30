@@ -17,3 +17,13 @@ A summary of Reflex functions is available in the [quick reference](Quickref.md)
 [hackage](https://hackage.haskell.org/package/reflex)
 
 [irc.freenode.net #reflex-frp](http://webchat.freenode.net?channels=%23reflex-frp&uio=d4)
+
+### Who is using Reflex
+* [Diagrams](https://github.com/diagrams)
+  * [diagrams-reflex](https://github.com/diagrams/diagrams-reflex)
+* [Layer 3 Communications](https://github.com/layer-3-communications)
+  * [reflex-helpers](https://github.com/layer-3-communications/reflex-dom-helpers)
+* [Reflex-FRP](https://github.com/reflex-frp)
+  * [reflex-dom](https://github.com/reflex-frp/reflex-dom)
+  * [reflex-dom-contrib](https://github.com/reflex-frp/reflex-dom-contrib)
+  * [reflex-gloss](https://github.com/reflex-frp/reflex-gloss)
