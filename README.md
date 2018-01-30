@@ -15,3 +15,19 @@ Comprehensive documentation is still a work in progress, but a tutorial for Refl
 [reflex at hackage](https://hackage.haskell.org/package/reflex)
 
 irc.freenode.net #reflex-frp
+
+
+### Who is using Reflex
+* [Diagrams](https://github.com/diagrams)
+  * [diagrams-reflex](https://github.com/diagrams/diagrams-reflex)
+* [Layer 3 Communications](https://github.com/layer-3-communications)
+* [Reflex-FRP](https://github.com/reflex-frp)
+  * [reflex-dom](https://github.com/reflex-frp/reflex-dom)
+  * [reflex-dom-contrib](https://github.com/reflex-frp/reflex-dom-contrib)
+  * [reflex-gloss](https://github.com/reflex-frp/reflex-gloss)
+* other
+  * [reflex-animation](https://github.com/saulzar/reflex-animation)
+  * [reflex-dom-colonnade](https://github.com/andrewthad/colonnade/tree/master/reflex-dom-colonnade)
+  * [reflex-gloss-scene](https://github.com/saulzar/reflex-gloss-scene)
+  * [reflex-jsx](https://github.com/dackerman/reflex-jsx)
+  * reflex-sdl2
