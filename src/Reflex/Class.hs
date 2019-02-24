@@ -573,11 +573,11 @@ filterRight = fmapMaybe $ preview _Right
 instance Reflex t => Alt (Event t) where
   ev1 <!> ev2 = leftmost [ev1, ev2]
 
--- | 'Event' intersection (convenient interface to 'coincidence').
+-- | 'Event' intersection
 instance Reflex t => Apply (Event t) where
-  evf <.> evx = coincidence (fmap (<$> evx) evf)
+  evf <.> evx = fmap (uncurry id) $ fmapMaybe justThese $ align evf evx
 
--- | 'Event' intersection (convenient interface to 'coincidence').
+-- | Nested 'Event' intersection (convenient interface to 'coincidence').
 instance Reflex t => Bind (Event t) where
   evx >>- f = coincidence (f <$> evx)
   join = coincidence
