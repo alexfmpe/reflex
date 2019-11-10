@@ -192,6 +192,7 @@ import Control.Monad.Trans.Cont (ContT)
 import Control.Monad.Trans.Except (ExceptT)
 import Control.Monad.Trans.RWS (RWST)
 import Control.Monad.Trans.Writer (WriterT)
+import qualified Control.Selective as S
 import Data.Align
 import Data.Bifunctor
 import Data.Coerce
@@ -234,6 +235,7 @@ class ( MonadHold t (PushM t)
       , MonadFix (PushM t)
       , Functor (Dynamic t)
       , Applicative (Dynamic t) -- Necessary for GHC <= 7.8
+      , S.Selective (Dynamic t)
       , Monad (Dynamic t)
       ) => Reflex t where
   -- | A container for a value that can change over time.  'Behavior's can be
@@ -262,7 +264,7 @@ class ( MonadHold t (PushM t)
   -- | Create a 'Behavior' that always has the given value
   constant :: a -> Behavior t a --TODO: Refactor to use 'pure' from Applicative instead; however, we need to make sure that encouraging Applicative-style use of 'Behavior's doesn't have a negative performance impact
   -- | Create an 'Event' from another 'Event'; the provided function can sample
-  -- 'Behavior's and hold 'Event's, and use the results to produce a occurring
+  -- 'Behavior's and hold 'Event's, and use the results to produce an occurring
   -- (Just) or non-occurring (Nothing) result
   push :: (a -> PushM t (Maybe b)) -> Event t a -> Event t b
   -- | Like 'push' but intended for functions that the implementation can consider cheap to compute for performance considerations. WARNING: The function passed to 'pushCheap' may be run multiple times without any caching.
@@ -640,6 +642,11 @@ instance Reflex t => Applicative (Behavior t) where
   f <*> x = pull $ sample f `ap` sample x
   _ *> b = b
   a <* _ = a
+
+instance Reflex t => S.Selective (Behavior t) where
+  select e f = pull $ sample e >>= \case
+    Left a -> sample f <*> pure a
+    Right b -> pure b
 
 instance Reflex t => Apply (Behavior t) where
   (<.>) = (<*>)
@@ -1098,6 +1105,26 @@ gate = attachWithMaybe $ \allow a -> if allow then Just a else Nothing
 switcher :: (Reflex t, MonadHold t m)
         => Behavior t a -> Event t (Behavior t a) -> m (Behavior t a)
 switcher b eb = pull . (sample <=< sample) <$> hold b eb
+
+instance (Reflex t, Applicative (Dynamic t)) => S.Selective (Dynamic t) where
+  select de df =
+    let bv = ffor2 (sample (current de)) (sample (current df)) $ \e f -> either f id e
+        ev = flip push (align (updated de) (updated df)) $ \case
+          This e -> do
+            f <- sample (current df)
+            pure $ case e of
+              Left a -> Just $ f a
+              Right b -> Just b
+          That f -> do
+            e <- sample (current de)
+            pure $ case e of
+              Left a -> Just $ f a
+              Right _ -> Nothing
+          These e f -> do
+            pure $ case e of
+              Left a -> Just $ f a
+              Right b -> Just b
+    in unsafeBuildDynamic bv ev
 
 instance (Reflex t, IsString a) => IsString (Dynamic t a) where
   fromString = pure . fromString
