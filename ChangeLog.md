@@ -1,5 +1,16 @@
 # Revision history for reflex
 
+## 0.9.0.0
+
+* Breaking Change: Filter updates to `listWithKey` child widgets so that changes to the input Map don't cause spurious updates to unaffected children. This imposes an `Eq` constraint on the child values.
+* Expose all Requester internals in Reflex.Requester.Base.Internal
+* [Add EventWriter instance for RequesterT #469](https://github.com/reflex-frp/reflex/pull/469)
+
+## 0.8.2.2
+
+* Require witherable >= 0.4 and, hence, a newer monoidal-containers
+* Support newer constraints-extras (0.4)
+
 ## 0.8.2.1
 
 * Fix build for GHC 9.2
