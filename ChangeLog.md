@@ -1,5 +1,25 @@
 # Revision history for reflex
 
+## Unreleased
+
+* Add support for GHC 9.8 and 9.10
+
+## 0.9.3.0
+
+* Headless Host: Generalize to allow returning arbitrary types
+
+## 0.9.2.0
+
+* Add MonadMask, MonadCatch, MonadThrow instances
+
+## 0.9.1.0
+
+* Headless Host: Add some MonadSample, MonadHold, and MonadFix instances
+
+## 0.9.0.1
+
+* Add support for ghc-9.6
+
 ## 0.9.0.0
 
 * Breaking Change: Filter updates to `listWithKey` child widgets so that changes to the input Map don't cause spurious updates to unaffected children. This imposes an `Eq` constraint on the child values.

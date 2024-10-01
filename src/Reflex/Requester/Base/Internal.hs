@@ -32,7 +32,10 @@ import Reflex.Requester.Class
 import Reflex.TriggerEvent.Class
 
 import Control.Applicative (liftA2)
+import Control.Monad
+import Control.Monad.Catch (MonadMask, MonadThrow, MonadCatch)
 import Control.Monad.Exception
+import Control.Monad.Fix
 import Control.Monad.Identity
 import Control.Monad.Morph
 import Control.Monad.Primitive
@@ -275,6 +278,9 @@ newtype RequesterT t request (response :: Type -> Type) m a = RequesterT { unReq
 #if MIN_VERSION_base(4,9,1)
            , MonadAsyncException
 #endif
+           , MonadCatch
+           , MonadThrow
+           , MonadMask
            )
 
 deriving instance MonadSample t m => MonadSample t (RequesterT t request response m)
